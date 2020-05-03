@@ -154,7 +154,7 @@ class NBMasterBar(MasterBar):
         if self.total_time:
             total_time = format_time(time.time() - self.main_bar.start_t)
             self.text = f'Total time: {total_time} <p>' + self.text
-        self.out.update(HTML(self.text))
+        if hasattr(self, 'out'): self.out.update(HTML(self.text))
 
     def add_child(self, child):
         self.child = child
@@ -261,7 +261,8 @@ class ConsoleMasterBar(MasterBar):
 
     def add_child(self, child):
         self.child = child
-        self.child.prefix = f'Epoch {self.main_bar.last_v+1}/{self.main_bar.total} :'
+        v = 0 if self.main_bar.last_v is None else self.main_bar.last_v
+        self.child.prefix = f'Epoch {v+1}/{self.main_bar.total} :'
         self.child.display = True
 
     def on_iter_begin(self):
