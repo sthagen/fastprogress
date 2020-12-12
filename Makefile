@@ -10,13 +10,14 @@ docs_serve: docs
 	cd docs && bundle exec jekyll serve
 
 docs: $(SRC)
-	nbdev_build_docs
+	nbdev_build_docs --mk_readme false
 	touch docs
 
 test:
 	nbdev_test_nbs
 
 release: pypi
+	fastrelease_conda_package --upload_user fastai
 	nbdev_bump_version
 
 pypi: dist
